@@ -1,0 +1,15 @@
+/* Import Jeju Myeongjo font */
+@import url('//fonts.googleapis.com/earlyaccess/jejumyeongjo.css');
+
+/* Apply Jeju Myeongjo font to the entire app */
+body {
+  font-family: 'Jeju Myeongjo', serif;
+}
+
+.modal-content {
+  font-family: 'Jeju Myeongjo', serif;
+}
+
+.carousel-text {
+  font-family: 'Jeju Myeongjo', serif;
+}
