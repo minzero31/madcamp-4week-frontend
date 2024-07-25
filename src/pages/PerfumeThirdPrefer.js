@@ -9,6 +9,7 @@ const PerfumeThirdPrefer = () => {
   const [showDescription, setShowDescription] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+  const [descriptionTimeout, setDescriptionTimeout] = useState(null);
   // 새로운 state: 싫어하는 분위기를 저장
   const [selecteddislikeMood, setSelecteddislikeMood] = useState([]);
 
