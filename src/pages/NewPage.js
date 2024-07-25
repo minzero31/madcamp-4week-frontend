@@ -3,6 +3,8 @@ import { useSpring, animated, useSpringValue } from '@react-spring/web';
 import styled from 'styled-components'; 
 import { useDrag } from '@use-gesture/react';
 import axios from 'axios';
+import '../App.css'; // 애니메이션 스타일을 불러옵니다.
+
 
 // Utility function to clamp values
 const clamp = (min, max, value) => Math.max(min, Math.min(max, value));
@@ -15,6 +17,7 @@ const EXPANDED_WIDTH = INITIAL_WIDTH * 1.5;
 const Body = styled.div`
   height: 100vh;
   width: 100vw;
+
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -22,6 +25,8 @@ const Body = styled.div`
   background-size: cover;
   background-position: center;
   transition: background-image 0.5s ease-in-out;
+    font-family: 'MaruBuri';
+
 `;
 
 const DockContainer = styled(animated.div)`
@@ -39,6 +44,7 @@ const DockContainer = styled(animated.div)`
   box-sizing: content-box;
   border-radius: 12px;
   transform-origin: center bottom;
+  
 `;
 
 const DockCardContainer = styled.div`
@@ -72,7 +78,7 @@ const CardContainer = styled.span`
   overflow: hidden;
   width: 100%;
   height: 100%;
-
+\
   img {
     width: 50%;
     height: 50%;
@@ -120,6 +126,7 @@ const Modal = styled.div`
   padding: 30px;
   border-radius: 10px;
   z-index: 1000;
+  
   width: 600px;
   max-height: 70%;
   overflow-y: auto;
@@ -374,6 +381,7 @@ const TextLabel = styled(animated.div)`
   font-size: 45px;
   opacity: 0;
   transition: opacity 300ms ease-in-out;
+  font-family: 'MaruBuri';
 `;
 
 // NewPage component
@@ -416,8 +424,8 @@ function NewPage() {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420'
       };
-      
-      const response = await axios.get(`https://360a-223-39-180-178.ngrok-free.app/api/v1/perfume/perfumelist/${moodId}`, { headers });
+      const baseurll = process.env.REACT_APP_API_BASE_URL;
+      const response = await axios.get(`${baseurll}/api/v1/perfume/perfumelist/${moodId}`, { headers });
       if (response.data.code === 'success') {
         setSelectedPerfume(response.data.data.recommendPerfumeInfoList[0]);
         setSelectedMoodId(moodId);

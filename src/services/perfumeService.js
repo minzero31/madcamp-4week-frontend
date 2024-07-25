@@ -28,3 +28,24 @@ export const getPerfumeRecommendations = async (likedAccordIds, dislikedMoodIds,
     throw error;
   }
 };
+
+export const fetchPerfumesByMood = async (moodId, setIsLoading, setSelectedPerfume, setSelectedMoodId, setError) => {
+  try {
+    setIsLoading(true);
+
+    const response = await axiosInstance.get(`/api/v1/perfume/perfumelist/${moodId}`);
+    if (response.data.code === 'success') {
+      setSelectedPerfume(response.data.data.recommendPerfumeInfoList[0]);
+      setSelectedMoodId(moodId);
+
+      return response.data.data;
+
+    } else {
+      throw new Error('무드별 향수 목록 가져오기 실패');
+    }
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
