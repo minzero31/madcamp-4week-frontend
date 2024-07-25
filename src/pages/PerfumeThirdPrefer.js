@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import '../App.css'; // 애니메이션 스타일을 불러옵니다.
+import '../App.css';
 
 const PerfumeThirdPrefer = () => {
   const [description, setDescription] = useState('');
   const [fadeOut, setFadeOut] = useState(false);
-  const [descriptionTimeout, setDescriptionTimeout] = useState(null);
-  const [selectedImages, setSelectedImages] = useState([]);
   const [showDescription, setShowDescription] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+  // 새로운 state: 싫어하는 분위기를 저장
+  const [selecteddislikeMood, setSelecteddislikeMood] = useState([]);
 
   const location = useLocation();
-  const { selectedImages: previousSelections = [] } = location.state || {};
+  // location.state에서 selectedAccords와 selectedImages를 가져옴
+  const { selectedAccords = [], selectedImages = [] } = location.state || {};
+
+  console.log(selectedAccords);
+  console.log(selectedImages);
+
+  const navigate = useNavigate();
 
   const imageUrls = [
     'https://images.pexels.com/photos/2611810/pexels-photo-2611810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', 
@@ -52,10 +58,10 @@ const PerfumeThirdPrefer = () => {
     '연기에서 느껴지는 독특하고 강렬한 향기'
   ];
 
-  // Filter out previously selected images
-  const filteredImageUrls = imageUrls.filter((_, index) => !previousSelections.includes(index));
-  const filteredLabels = labels.filter((_, index) => !previousSelections.includes(index));
-  const filteredDescriptions = descriptions.filter((_, index) => !previousSelections.includes(index));
+  // 이전에 선택된 이미지를 제외한 필터링된 배열 생성
+  const filteredImageUrls = imageUrls.filter((_, index) => !selectedImages.includes(index));
+  const filteredLabels = labels.filter((_, index) => !selectedImages.includes(index));
+  const filteredDescriptions = descriptions.filter((_, index) => !selectedImages.includes(index));
 
   const containerStyle = {
     display: 'flex',
@@ -163,11 +169,9 @@ const PerfumeThirdPrefer = () => {
     transition: 'opacity 0.5s ease-in-out'
   };
 
-  const navigate = useNavigate();
-
   const handleImageClick = (index) => {
-    if (selectedImages.length < 3) {
-      setSelectedImages(prev => [...prev, index]);
+    if (selecteddislikeMood.length < 3) {
+      setSelecteddislikeMood(prev => [...prev, index]);
     } else {
       setShowMessage(true);
       setTimeout(() => setShowMessage(false), 1500);
@@ -179,27 +183,45 @@ const PerfumeThirdPrefer = () => {
     setTimeout(() => setShowDescription(false), 500);
   };
 
+  // 수정된 handleNext 함수
   const handleNext = () => {
-    navigate('/perfumegender', { state: { selectedImages } });
+    navigate('/perfumegender', { 
+      state: { 
+        selectedAccords, 
+        selecteddislikeMood 
+      } 
+    });
   };
 
   useEffect(() => {
-    if (selectedImages.length > 0) {
+    if (selecteddislikeMood.length > 0) {
       setShowDescription(true);
-      setDescriptionTimeout(setTimeout(() => {
-        setDescription(filteredDescriptions[selectedImages[selectedImages.length - 1]]);
+      if (descriptionTimeout) {
+        clearTimeout(descriptionTimeout);
+      }
+      const timeoutId = setTimeout(() => {
+        setDescription(filteredDescriptions[selecteddislikeMood[selecteddislikeMood.length - 1]]);
         setFadeOut(false);
-      }, 100));
+      }, 100);
+      setDescriptionTimeout(timeoutId);
     }
-  }, [selectedImages]);
+  }, [selecteddislikeMood]);
 
   useEffect(() => {
-    if (selectedImages.length === 3) {
+    if (selecteddislikeMood.length === 3) {
       setShowNextButton(true);
     } else {
       setShowNextButton(false);
     }
-  }, [selectedImages]);
+  }, [selecteddislikeMood]);
+
+  useEffect(() => {
+    return () => {
+      if (descriptionTimeout) {
+        clearTimeout(descriptionTimeout);
+      }
+    };
+  }, [descriptionTimeout]);
 
   return (
     <div style={containerStyle}>
@@ -211,13 +233,17 @@ const PerfumeThirdPrefer = () => {
             style={imageWrapperStyle}
             onClick={() => handleImageClick(index)}
           >
-            <img src={url} alt={`Perfume ${index}`} style={imageStyle(index)} />
+            <img 
+              src={url} 
+              alt={`Perfume ${index}`} 
+              style={imageStyle(selecteddislikeMood.includes(index))}
+            />
             <div style={labelStyle}>{filteredLabels[index]}</div>
           </div>
         ))}
       </div>
       <div style={selectedImagesContainerStyle}>
-        {selectedImages.map((index) => (
+        {selecteddislikeMood.map((index) => (
           <div key={index} style={{ marginBottom: '5px' }}>
             {filteredLabels[index]}
           </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
@@ -113,12 +113,25 @@ const WrapperHover = styled(Wrapper)`
 const PerfumeRecommend = () => {
   const [fadeOut, setFadeOut] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { selectedAccords, selecteddislikeMood, gender } = location.state || {};
+
 
   const handleLetterClick = () => {
     setFadeOut(true);
     setTimeout(() => {
-      navigate('/perfumerecommendcard');
+      navigate('/perfumerecommendcard', {
+        state: {
+          selectedAccords,
+          selecteddislikeMood,
+          gender
+        }
+      });
     }, 1000);
+
+
+
   };
 
   return (

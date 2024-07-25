@@ -190,7 +190,12 @@ const PerfumeFirstPrefer = () => {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate('/perfumesecondprefer'); // 페이지를 '/next-step'으로 이동
+
+
+    const updatedSelectedImages = selectedImages.map(index => index + 1);
+
+    // Navigate with the updated array
+    navigate('/perfumesecondprefer', { state: { selectedImages: updatedSelectedImages } });
   };
 
   return (
