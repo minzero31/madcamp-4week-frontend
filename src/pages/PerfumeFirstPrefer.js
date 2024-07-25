@@ -191,7 +191,12 @@ const PerfumeFirstPrefer = () => {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate('/perfumesecondprefer', { state: { selectedImages } });
+
+
+    const updatedSelectedImages = selectedImages.map(index => index + 1);
+
+    // Navigate with the updated array
+    navigate('/perfumesecondprefer', { state: { selectedImages: updatedSelectedImages } });
   };
   
   return (
