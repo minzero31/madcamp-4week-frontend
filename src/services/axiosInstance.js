@@ -13,20 +13,7 @@ const axiosInstance = axios.create({
 // 요청 인터셉터 추가
 axiosInstance.interceptors.request.use(
   config => {
-    // 토큰을 로컬 스토리지에서 가져오기
-    const serverAccessToken = localStorage.getItem('serverAccessToken');
-    const githubAccessToken = localStorage.getItem('githubAccessToken');
-
-    // 서버 액세스 토큰이 있으면 Authorization 헤더에 추가
-    if (serverAccessToken) {
-      config.headers['Authorization'] = `Bearer ${serverAccessToken}`;
-    }
-
-    // GitHub 액세스 토큰이 있으면 별도의 헤더에 추가
-    if (githubAccessToken) {
-      config.headers['githubAccessToken'] = githubAccessToken;
-    }
-
+    // 요청 전에 수행할 작업이 필요 없다면 이 부분을 비워둡니다.
     return config;
   },
   error => {
