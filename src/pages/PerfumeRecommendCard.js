@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // react-router-dom import
 
 const PerfumeRecommendCard = () => {
     const [activeText, setActiveText] = useState([false, false, false, false, false, false]);
+    const navigate = useNavigate(); // useNavigate hook
 
     const handleImageClick = (index) => {
         const newActiveText = [...activeText];
         newActiveText[index] = !newActiveText[index];
         setActiveText(newActiveText);
+    };
+
+    const handleNavigate = () => {
+        navigate('/colorpallete'); // navigate to /colorpallete
     };
 
     const wrapStyle = {
@@ -146,6 +152,18 @@ const PerfumeRecommendCard = () => {
         opacity: '1',
     };
 
+    const footerStyle = {
+        position: 'absolute',
+        bottom: '10px',
+        right: '10px',
+        color: 'black', // 텍스트 색상을 검정색으로 설정
+        fontSize: '25px',
+        cursor: 'pointer',
+        zIndex: '20',
+        padding: '10px',
+        fontFamily: 'MaruBuri', // 마루부리 글씨체 적용
+    };
+
     return (
         <div style={containerStyle}>
             <div style={mainTextStyle}>당신을 위한 추천 향수</div>
@@ -244,6 +262,9 @@ const PerfumeRecommendCard = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div style={footerStyle} onClick={handleNavigate}>
+                Color Palette
             </div>
             <style jsx>{`
                 #wrap:hover .card {

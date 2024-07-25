@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { usePerfumeContext } from '../contexts/PerfumeContext'; // usePerfumeContext를 가져옵니다
 import '../App.css'; // 애니메이션 스타일을 불러옵니다.
 
 const PerfumeThirdPrefer = () => {
-  const { selectedImages, setSelectedImages } = usePerfumeContext(); // usePerfumeContext에서 상태를 가져옵니다
-
   const [description, setDescription] = useState('');
   const [fadeOut, setFadeOut] = useState(false);
+  const [descriptionTimeout, setDescriptionTimeout] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
   const [showDescription, setShowDescription] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
-  const [descriptionTimeout, setDescriptionTimeout] = useState(null);
 
   const location = useLocation();
   const { selectedImages: previousSelections = [] } = location.state || {};
@@ -188,14 +186,10 @@ const PerfumeThirdPrefer = () => {
   useEffect(() => {
     if (selectedImages.length > 0) {
       setShowDescription(true);
-      if (descriptionTimeout) {
-        clearTimeout(descriptionTimeout);
-      }
-      const timeoutId = setTimeout(() => {
+      setDescriptionTimeout(setTimeout(() => {
         setDescription(filteredDescriptions[selectedImages[selectedImages.length - 1]]);
         setFadeOut(false);
-      }, 100);
-      setDescriptionTimeout(timeoutId);
+      }, 100));
     }
   }, [selectedImages]);
 
@@ -206,14 +200,6 @@ const PerfumeThirdPrefer = () => {
       setShowNextButton(false);
     }
   }, [selectedImages]);
-
-  useEffect(() => {
-    return () => {
-      if (descriptionTimeout) {
-        clearTimeout(descriptionTimeout);
-      }
-    };
-  }, [descriptionTimeout]);
 
   return (
     <div style={containerStyle}>
