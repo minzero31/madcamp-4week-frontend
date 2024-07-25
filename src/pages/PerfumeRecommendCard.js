@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getPerfumeRecommendations } from '../services/perfumeService';
+import { useNavigate } from 'react-router-dom'; // react-router-dom import
 
 const PerfumeRecommendCard = () => {
   const [perfumes, setPerfumes] = useState([]);
   const [activeText, setActiveText] = useState([]);
   const location = useLocation();
   const { selectedAccords, selecteddislikeMood, gender } = location.state || {};
-
+  const navigate = useNavigate(); 
   const imageUrls = [
     'https://i.pinimg.com/736x/22/fe/81/22fe81e03c301c41fda6033f6f95e8ab.jpg',
     'https://i.pinimg.com/564x/df/ee/9c/dfee9c0de7bb6ff4e3c145d29fce75c0.jpg',
@@ -43,7 +44,9 @@ const PerfumeRecommendCard = () => {
     newActiveText[index] = !newActiveText[index];
     setActiveText(newActiveText);
   };
-
+  const handleNavigate = () => {
+    navigate('/colorpallete'); // navigate to /colorpallete
+};
   const wrapStyle = {
     position: 'relative',
     width: '350px',
@@ -177,9 +180,9 @@ const textOverlayStyle = {
     zIndex: '10',
 };
 
-const activeOverlayStyle = {
-    opacity: '1',
-};
+    const activeOverlayStyle = {
+        opacity: '1',
+    };
 
 const footerStyle = {
     position: 'absolute',

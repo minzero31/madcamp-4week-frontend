@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { usePerfumeContext } from '../contexts/PerfumeContext'; // 수정된 부분
 import '../App.css'; // 애니메이션 스타일을 불러옵니다.
 
 const PerfumeFirstPrefer = () => {
-  const { selectedImages, setSelectedImages } = usePerfumeContext(); // 수정된 부분
   const [description, setDescription] = useState('');
   const [fadeOut, setFadeOut] = useState(false);
   const [descriptionTimeout, setDescriptionTimeout] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
   const [showDescription, setShowDescription] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
@@ -63,7 +62,7 @@ const PerfumeFirstPrefer = () => {
 
   const titleStyle = {
     fontSize: '35px',
-    margin: '80px 0',
+    margin: '50px 0',
     fontWeight: 600
   };
 
@@ -198,7 +197,7 @@ const PerfumeFirstPrefer = () => {
     // Navigate with the updated array
     navigate('/perfumesecondprefer', { state: { selectedImages: updatedSelectedImages } });
   };
-  
+
   return (
     <div style={containerStyle}>
       <style>
